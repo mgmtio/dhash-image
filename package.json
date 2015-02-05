@@ -1,24 +1,25 @@
 {
   "name": "dhash-image",
-  "version": "1.0.0",
-  "description": "Compute difference hash of image",
+  "version": "1.1.0",
+  "description": "Compare image similarity with a dhash",
   "keywords": [
     "dhash",
     "image",
     "compare"
   ],
   "author": "Richard van der Dys <richard.vanderdys@gmail.com> (http://richardvanderdys.com/)",
+  "contributors": [
+    "Jonathan Ong <jonathanrichardong@gmail.com>",
+    "Lovell Fuller <npm@lovell.info>"
+  ],
   "license": "MIT",
   "dependencies": {
-    "native-or-bluebird": "^1.1.2",
-    "pngparse": "^2.0.1",
-    "sharp": "^0.8.1"
+    "sharp": "^0.9.1"
   },
   "devDependencies": {
-    "bluebird": "^2.3.11",
     "istanbul": "0",
     "mocha": "2",
-    "should": "*"
+    "should": "4"
   },
   "scripts": {
     "test": "mocha --reporter spec",

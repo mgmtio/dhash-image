@@ -1,10 +1,7 @@
-
-var Promise = require('native-or-bluebird');
-var pngparse = require('pngparse');
+var assert = require('assert');
 var sharp = require('sharp');
 
 var DEFAULT_HASH_SIZE = 8;
-var PIXEL_LENGTH = 4;
 
 module.exports = function(path, callback, hashSize) {
 	if (typeof callback === 'number') {
@@ -16,31 +13,23 @@ module.exports = function(path, callback, hashSize) {
 	var width = height + 1;
 
 	// Covert to small gray image
-	var stream = sharp(path)
+	var promise = sharp(path)
 		.grayscale()
 		.resize(width, height)
-		.png();
-	// png parse is stupid
-	stream.destroy = noop;
-
-	var promise = new Promise(function (resolve, reject) {
-		pngparse.parseStream(stream, function (err, data) {
-			/* istanbul ignore if */
-			if (err) return reject(err);
-			resolve(data.data);
-		})
-	}).then(function (pixels) {
-		// Compare adjacent pixels.
-		var difference = '';
-		for (var row = 0; row < height; row++) {
-			for (var col = 0; col < height; col++) { // height is not a mistake here...
-				var left = px(pixels, width, col, row);
-				var right = px(pixels, width, col + 1, row);
-				difference += left < right ? 1 : 0;
+		.raw()
+		.toBuffer()
+		.then(function(pixels) {
+			// Compare adjacent pixels.
+			var difference = '';
+			for (var row = 0; row < height; row++) {
+				for (var col = 0; col < height; col++) { // height is not a mistake here...
+					var left = px(pixels, width, col, row);
+					var right = px(pixels, width, col + 1, row);
+					difference += left < right ? 1 : 0;
+				}
 			}
-		}
-		return binaryToHex(difference);
-	})
+			return binaryToHex(difference);
+		});
 
 	if (typeof callback === 'function') {
 		promise.then(function (res) {
@@ -64,7 +53,7 @@ function binaryToHex(s) {
 }
 
 function px(pixels, width, x, y) {
-	return pixels[width * PIXEL_LENGTH * y + x * PIXEL_LENGTH];
+	var pixel = width * y + x;
+	assert(pixel < pixels.length);
+	return pixels[pixel];
 }
-
-function noop() {}
