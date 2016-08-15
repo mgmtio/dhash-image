@@ -20,7 +20,7 @@ npm install dhash-image
 
 ```
 
-var dhash = require('dhash');
+var dhash = require('dhash-image');
 
 dhash('/path/to/image', function(err, hash){
 	// Do something with hash hex-string...
