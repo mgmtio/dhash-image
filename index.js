@@ -3,6 +3,8 @@ var sharp = require('sharp');
 
 var DEFAULT_HASH_SIZE = 8;
 
+sharp.cache(false);
+
 module.exports = function(path, callback, hashSize) {
 	if (typeof callback === 'number') {
 		hashSize = callback;
