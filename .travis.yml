@@ -1,17 +1,9 @@
 language: node_js
 node_js:
-- "0.10"
-- "0.12"
-- "4"
-- "5"
+- "6"
+- "8"
+- "10"
 sudo: false
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-4.8
-env:
-  CXX=g++-4.8
+dist: trusty
 script: "npm run-script test-travis"
-after_script: "npm install coveralls@2 && cat ./coverage/lcov.info | coveralls"
+after_script: "npm install coveralls && cat ./coverage/lcov.info | coveralls"
