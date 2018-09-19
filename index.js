@@ -18,6 +18,7 @@ module.exports = function(path, callback, hashSize) {
 	var promise = sharp(path)
 		.grayscale()
 		.resize(width, height)
+		.ignoreAspectRatio()
 		.raw()
 		.toBuffer()
 		.then(function(pixels) {
