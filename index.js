@@ -17,8 +17,7 @@ module.exports = function(path, callback, hashSize) {
 	// Covert to small gray image
 	var promise = sharp(path)
 		.grayscale()
-		.resize(width, height)
-		.ignoreAspectRatio()
+		.resize(width, height, {fit:'fill'})
 		.raw()
 		.toBuffer()
 		.then(function(pixels) {
